@@ -1,73 +1,92 @@
-# Welcome to your Lovable project
+# 🛠️ SupportPro — Sistema de Gestão de Suporte Técnico
 
-## Project info
+![React](https://img.shields.io/badge/React-18-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?logo=tailwindcss)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Sistema web completo para gestão de suporte técnico, com dashboard analítico, controle de chamados, cadastro de clientes e avaliação de atendimento.
 
-## How can I edit this code?
+## 📸 Screenshots
 
-There are several ways of editing your application.
+| Dashboard | Chamados | Clientes |
+|-----------|----------|----------|
+| KPIs, gráficos de status e ranking de técnicos | Abertura, filtro e avaliação de chamados | Cadastro e visualização de clientes |
 
-**Use Lovable**
+## ✨ Funcionalidades
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Autenticação** — Tela de login com interface corporativa
+- **Dashboard analítico** com:
+  - Total de chamados, abertos e finalizados
+  - Tempo médio de atendimento e taxa de resolução
+  - Ranking de técnicos por chamados resolvidos
+  - Metas × Realizado com barras de progresso
+  - Gráfico de distribuição de status (PieChart)
+- **Gestão de Chamados** — Abertura com prioridade, técnico responsável, status e tempo gasto
+- **Avaliação do Cliente** — Sistema de estrelas para chamados finalizados
+- **Cadastro de Clientes** — Cards com informações de contato e empresa
+- **Landing Page** — Página institucional com apresentação do produto
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Tecnologias
 
-**Use your preferred IDE**
+- **React 18** + **TypeScript**
+- **Vite** — Build tool ultrarrápido
+- **Tailwind CSS** — Estilização utilitária
+- **shadcn/ui** — Componentes acessíveis (Radix UI)
+- **Recharts** — Gráficos interativos
+- **React Router DOM** — Navegação SPA
+- **Lucide React** — Ícones modernos
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 📦 Instalação e Execução
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# 1. Clone o repositório
+git clone https://github.com/SEU_USUARIO/supportpro.git
 
-Follow these steps:
+# 2. Acesse a pasta do projeto
+cd supportpro
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 3. Instale as dependências
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+O app estará disponível em `http://localhost:8080`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Estrutura do Projeto
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/
+│   ├── AppLayout.tsx        # Layout com sidebar de navegação
+│   ├── NavLink.tsx          # Componente de link de navegação
+│   └── ui/                  # Componentes shadcn/ui
+├── data/
+│   └── mockData.ts          # Dados mock (clientes, chamados, técnicos)
+├── pages/
+│   ├── Landing.tsx          # Landing page institucional
+│   ├── Login.tsx            # Tela de login
+│   ├── Dashboard.tsx        # Dashboard com KPIs e gráficos
+│   ├── Tickets.tsx          # Gestão de chamados
+│   ├── Clients.tsx          # Cadastro de clientes
+│   └── NotFound.tsx         # Página 404
+├── hooks/                   # Custom hooks
+├── lib/                     # Utilitários
+├── App.tsx                  # Rotas da aplicação
+├── index.css                # Design tokens e tema
+└── main.tsx                 # Ponto de entrada
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 Design
 
-## What technologies are used for this project?
+Interface corporativa com paleta em **azul marinho e ciano**, tipografia moderna e componentes responsivos. O design system utiliza tokens semânticos via CSS custom properties para consistência visual.
 
-This project is built with:
+## 📄 Licença
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Este projeto é de uso pessoal/portfólio. Sinta-se livre para usar como referência.
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Desenvolvido com ❤️ usando [Lovable](https://lovable.dev)
