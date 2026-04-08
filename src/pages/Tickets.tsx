@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { tickets as initialTickets, clients, technicians, Ticket } from "@/data/mockData";
 import AppLayout from "@/components/AppLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Star } from "lucide-react";
+import { Plus, Search, Star, Eye, CheckCircle, Clock, XCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 const priorityLabels: Record<string, string> = { baixa: "Baixa", media: "Média", alta: "Alta", critica: "Crítica" };
@@ -31,12 +31,13 @@ const statusBadge: Record<string, string> = {
 export default function Tickets() {
   const [ticketList, setTicketList] = useState<Ticket[]>(initialTickets);
   const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState<string>("todos");
   const [openNew, setOpenNew] = useState(false);
   const [ratingTicket, setRatingTicket] = useState<Ticket | null>(null);
   const [rating, setRating] = useState(5);
   const [ratingComment, setRatingComment] = useState("");
+  const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
 
-  // New ticket form
   const [newTicket, setNewTicket] = useState({
     clientId: "",
     description: "",
@@ -44,12 +45,21 @@ export default function Tickets() {
     technician: "",
   });
 
-  const filtered = ticketList.filter(
-    (t) =>
+  const filtered = ticketList.filter((t) => {
+    const matchesSearch =
       t.clientName.toLowerCase().includes(search.toLowerCase()) ||
       t.id.toLowerCase().includes(search.toLowerCase()) ||
-      t.description.toLowerCase().includes(search.toLowerCase())
-  );
+      t.description.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = filterStatus === "todos" || t.status === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
+
+  const counts = {
+    todos: ticketList.length,
+    aberto: ticketList.filter((t) => t.status === "aberto").length,
+    em_andamento: ticketList.filter((t) => t.status === "em_andamento").length,
+    finalizado: ticketList.filter((t) => t.status === "finalizado").length,
+  };
 
   const handleCreate = () => {
     const client = clients.find((c) => c.id === newTicket.clientId);
@@ -85,6 +95,26 @@ export default function Tickets() {
     setRating(5);
     setRatingComment("");
     toast.success("Avaliação registrada!");
+  };
+
+  const handleChangeStatus = (ticketId: string, newStatus: Ticket["status"]) => {
+    setTicketList(
+      ticketList.map((t) =>
+        t.id === ticketId ? { ...t, status: newStatus } : t
+      )
+    );
+    toast.success(`Status atualizado para ${statusLabels[newStatus]}`);
+    if (detailTicket?.id === ticketId) {
+      setDetailTicket({ ...detailTicket, status: newStatus });
+    }
+  };
+
+  const handleResolve = (ticketId: string) => {
+    handleChangeStatus(ticketId, "finalizado");
+  };
+
+  const handleReopen = (ticketId: string) => {
+    handleChangeStatus(ticketId, "aberto");
   };
 
   return (
@@ -156,6 +186,28 @@ export default function Tickets() {
           </Dialog>
         </div>
 
+        {/* Status filter tabs */}
+        <div className="flex flex-wrap gap-2">
+          {[
+            { key: "todos", label: "Todos", icon: Eye },
+            { key: "aberto", label: "Abertos", icon: XCircle },
+            { key: "em_andamento", label: "Em Andamento", icon: Clock },
+            { key: "finalizado", label: "Finalizados", icon: CheckCircle },
+          ].map(({ key, label, icon: Icon }) => (
+            <Button
+              key={key}
+              variant={filterStatus === key ? "default" : "outline"}
+              size="sm"
+              onClick={() => setFilterStatus(key)}
+              className={filterStatus === key ? "bg-primary text-primary-foreground" : ""}
+            >
+              <Icon className="w-4 h-4 mr-1.5" />
+              {label}
+              <span className="ml-1.5 text-xs opacity-70">({counts[key as keyof typeof counts]})</span>
+            </Button>
+          ))}
+        </div>
+
         {/* Search */}
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -183,6 +235,7 @@ export default function Tickets() {
                     <th className="text-left p-3 font-medium text-muted-foreground">Status</th>
                     <th className="text-left p-3 font-medium text-muted-foreground">Tempo</th>
                     <th className="text-left p-3 font-medium text-muted-foreground">Avaliação</th>
+                    <th className="text-left p-3 font-medium text-muted-foreground">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -217,6 +270,52 @@ export default function Tickets() {
                           <span className="text-muted-foreground">—</span>
                         )}
                       </td>
+                      <td className="p-3">
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0"
+                            title="Ver detalhes"
+                            onClick={() => setDetailTicket(t)}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          {t.status === "aberto" && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 text-warning"
+                              title="Iniciar atendimento"
+                              onClick={() => handleChangeStatus(t.id, "em_andamento")}
+                            >
+                              <ArrowRight className="w-4 h-4" />
+                            </Button>
+                          )}
+                          {t.status === "em_andamento" && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 text-success"
+                              title="Marcar como resolvido"
+                              onClick={() => handleResolve(t.id)}
+                            >
+                              <CheckCircle className="w-4 h-4" />
+                            </Button>
+                          )}
+                          {t.status === "finalizado" && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 text-info"
+                              title="Reabrir chamado"
+                              onClick={() => handleReopen(t.id)}
+                            >
+                              <XCircle className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -224,6 +323,91 @@ export default function Tickets() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Detail Dialog */}
+        <Dialog open={!!detailTicket} onOpenChange={(o) => !o && setDetailTicket(null)}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Detalhes do Chamado {detailTicket?.id}</DialogTitle>
+            </DialogHeader>
+            {detailTicket && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Cliente</p>
+                    <p className="font-medium text-foreground">{detailTicket.clientName}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Data</p>
+                    <p className="font-medium text-foreground">{detailTicket.date}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Técnico</p>
+                    <p className="font-medium text-foreground">{detailTicket.technician}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Tempo Gasto</p>
+                    <p className="font-medium text-foreground">{detailTicket.timeSpent > 0 ? `${detailTicket.timeSpent} min` : "Não iniciado"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Prioridade</p>
+                    <Badge variant="outline" className={priorityBadge[detailTicket.priority]}>{priorityLabels[detailTicket.priority]}</Badge>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Status</p>
+                    <Badge variant="outline" className={statusBadge[detailTicket.status]}>{statusLabels[detailTicket.status]}</Badge>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Descrição</p>
+                  <p className="text-foreground text-sm bg-muted/30 rounded-md p-3">{detailTicket.description}</p>
+                </div>
+                {detailTicket.rating && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Avaliação</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map((n) => (
+                          <Star key={n} className={`w-4 h-4 ${n <= detailTicket.rating! ? "text-warning fill-warning" : "text-muted"}`} />
+                        ))}
+                      </div>
+                      {detailTicket.ratingComment && (
+                        <span className="text-sm text-muted-foreground">— {detailTicket.ratingComment}</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+                <div className="flex gap-2 pt-2">
+                  {detailTicket.status === "aberto" && (
+                    <Button size="sm" className="bg-warning text-warning-foreground" onClick={() => handleChangeStatus(detailTicket.id, "em_andamento")}>
+                      <ArrowRight className="w-4 h-4 mr-1" /> Iniciar Atendimento
+                    </Button>
+                  )}
+                  {detailTicket.status === "em_andamento" && (
+                    <Button size="sm" className="bg-success text-success-foreground" onClick={() => handleResolve(detailTicket.id)}>
+                      <CheckCircle className="w-4 h-4 mr-1" /> Marcar como Resolvido
+                    </Button>
+                  )}
+                  {detailTicket.status === "finalizado" && !detailTicket.rating && (
+                    <>
+                      <Button size="sm" variant="outline" onClick={() => handleReopen(detailTicket.id)}>
+                        <XCircle className="w-4 h-4 mr-1" /> Reabrir
+                      </Button>
+                      <Button size="sm" className="bg-accent text-accent-foreground" onClick={() => { setRatingTicket(detailTicket); setDetailTicket(null); }}>
+                        <Star className="w-4 h-4 mr-1" /> Avaliar
+                      </Button>
+                    </>
+                  )}
+                  {detailTicket.status === "finalizado" && detailTicket.rating && (
+                    <Button size="sm" variant="outline" onClick={() => handleReopen(detailTicket.id)}>
+                      <XCircle className="w-4 h-4 mr-1" /> Reabrir
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* Rating Dialog */}
         <Dialog open={!!ratingTicket} onOpenChange={(o) => !o && setRatingTicket(null)}>
