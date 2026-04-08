@@ -89,13 +89,13 @@ export default function Landing() {
             {features.map((f, i) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-border bg-card shadow-card hover:shadow-elevated transition-shadow group"
+                className="rounded-xl border border-border bg-card shadow-card hover:shadow-elevated transition-shadow group overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
-                  <f.icon className="w-6 h-6 text-accent" />
+                <img src={f.img} alt={f.title} loading="lazy" width={768} height={512} className="w-full h-40 object-cover" />
+                <div className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground">{f.desc}</p>
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
-                <p className="text-sm text-muted-foreground">{f.desc}</p>
               </div>
             ))}
           </div>
