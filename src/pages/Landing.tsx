@@ -1,18 +1,23 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Headphones, ArrowRight, Shield, Clock, BarChart3, Users, CheckCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import featureGestao from "@/assets/feature-gestao.jpg";
+import featureTempo from "@/assets/feature-tempo.jpg";
+import featureMetricas from "@/assets/feature-metricas.jpg";
+import featureRanking from "@/assets/feature-ranking.jpg";
+import featureAvaliacao from "@/assets/feature-avaliacao.jpg";
+import featurePriorizacao from "@/assets/feature-priorizacao.jpg";
 
 export default function Landing() {
   const navigate = useNavigate();
 
   const features = [
-    { icon: Shield, title: "Gestão Completa", desc: "Controle total dos chamados de suporte técnico da sua empresa." },
-    { icon: Clock, title: "Tempo Real", desc: "Acompanhe o status e tempo de cada atendimento em tempo real." },
-    { icon: BarChart3, title: "Métricas Avançadas", desc: "Dashboard com indicadores de performance e metas." },
-    { icon: Users, title: "Ranking de Técnicos", desc: "Avalie e compare a produtividade da sua equipe." },
-    { icon: CheckCircle, title: "Avaliação do Cliente", desc: "Colete feedback e melhore continuamente o atendimento." },
-    { icon: Star, title: "Priorização Inteligente", desc: "Classifique chamados por prioridade e urgência." },
+    { icon: Shield, title: "Gestão Completa", desc: "Controle total dos chamados de suporte técnico da sua empresa.", img: featureGestao },
+    { icon: Clock, title: "Tempo Real", desc: "Acompanhe o status e tempo de cada atendimento em tempo real.", img: featureTempo },
+    { icon: BarChart3, title: "Métricas Avançadas", desc: "Dashboard com indicadores de performance e metas.", img: featureMetricas },
+    { icon: Users, title: "Ranking de Técnicos", desc: "Avalie e compare a produtividade da sua equipe.", img: featureRanking },
+    { icon: CheckCircle, title: "Avaliação do Cliente", desc: "Colete feedback e melhore continuamente o atendimento.", img: featureAvaliacao },
+    { icon: Star, title: "Priorização Inteligente", desc: "Classifique chamados por prioridade e urgência.", img: featurePriorizacao },
   ];
 
   return (
