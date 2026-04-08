@@ -1,18 +1,23 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Headphones, ArrowRight, Shield, Clock, BarChart3, Users, CheckCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import featureGestao from "@/assets/feature-gestao.jpg";
+import featureTempo from "@/assets/feature-tempo.jpg";
+import featureMetricas from "@/assets/feature-metricas.jpg";
+import featureRanking from "@/assets/feature-ranking.jpg";
+import featureAvaliacao from "@/assets/feature-avaliacao.jpg";
+import featurePriorizacao from "@/assets/feature-priorizacao.jpg";
 
 export default function Landing() {
   const navigate = useNavigate();
 
   const features = [
-    { icon: Shield, title: "Gestão Completa", desc: "Controle total dos chamados de suporte técnico da sua empresa." },
-    { icon: Clock, title: "Tempo Real", desc: "Acompanhe o status e tempo de cada atendimento em tempo real." },
-    { icon: BarChart3, title: "Métricas Avançadas", desc: "Dashboard com indicadores de performance e metas." },
-    { icon: Users, title: "Ranking de Técnicos", desc: "Avalie e compare a produtividade da sua equipe." },
-    { icon: CheckCircle, title: "Avaliação do Cliente", desc: "Colete feedback e melhore continuamente o atendimento." },
-    { icon: Star, title: "Priorização Inteligente", desc: "Classifique chamados por prioridade e urgência." },
+    { icon: Shield, title: "Gestão Completa", desc: "Controle total dos chamados de suporte técnico da sua empresa.", img: featureGestao },
+    { icon: Clock, title: "Tempo Real", desc: "Acompanhe o status e tempo de cada atendimento em tempo real.", img: featureTempo },
+    { icon: BarChart3, title: "Métricas Avançadas", desc: "Dashboard com indicadores de performance e metas.", img: featureMetricas },
+    { icon: Users, title: "Ranking de Técnicos", desc: "Avalie e compare a produtividade da sua equipe.", img: featureRanking },
+    { icon: CheckCircle, title: "Avaliação do Cliente", desc: "Colete feedback e melhore continuamente o atendimento.", img: featureAvaliacao },
+    { icon: Star, title: "Priorização Inteligente", desc: "Classifique chamados por prioridade e urgência.", img: featurePriorizacao },
   ];
 
   return (
@@ -84,13 +89,13 @@ export default function Landing() {
             {features.map((f, i) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-border bg-card shadow-card hover:shadow-elevated transition-shadow group"
+                className="rounded-xl border border-border bg-card shadow-card hover:shadow-elevated transition-shadow group overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
-                  <f.icon className="w-6 h-6 text-accent" />
+                <img src={f.img} alt={f.title} loading="lazy" width={768} height={512} className="w-full h-40 object-cover" />
+                <div className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground">{f.desc}</p>
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
-                <p className="text-sm text-muted-foreground">{f.desc}</p>
               </div>
             ))}
           </div>
