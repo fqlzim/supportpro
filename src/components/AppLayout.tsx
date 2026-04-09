@@ -8,12 +8,14 @@ import {
   Menu,
   X,
   Headphones,
+  Settings,
 } from "lucide-react";
 
 const navItems = [
   { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
   { title: "Chamados", path: "/chamados", icon: Ticket },
   { title: "Clientes", path: "/clientes", icon: Users },
+  { title: "Configurações", path: "/configuracoes", icon: Settings },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

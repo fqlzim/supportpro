@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Tickets from "./pages/Tickets";
 import Clients from "./pages/Clients";
+import TicketSettings from "./pages/TicketSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/chamados" element={<Tickets />} />
           <Route path="/clientes" element={<Clients />} />
+          <Route path="/configuracoes" element={<TicketSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
