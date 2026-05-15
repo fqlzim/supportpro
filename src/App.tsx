@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Tickets from "./pages/Tickets";
 import Clients from "./pages/Clients";
+import Chat from "./pages/Chat";
 import TicketSettings from "./pages/TicketSettings";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/chamados" element={<Tickets />} />
           <Route path="/clientes" element={<Clients />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/configuracoes" element={<TicketSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
