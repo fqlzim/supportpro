@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Tickets from "./pages/Tickets";
 import Clients from "./pages/Clients";
+import Chat from "./pages/Chat";
 import TicketSettings from "./pages/TicketSettings";
 import NotFound from "./pages/NotFound";
 
