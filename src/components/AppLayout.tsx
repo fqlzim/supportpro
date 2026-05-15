@@ -9,11 +9,13 @@ import {
   X,
   Headphones,
   Settings,
+  MessageCircle,
 } from "lucide-react";
 
 const navItems = [
   { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
   { title: "Chamados", path: "/chamados", icon: Ticket },
+  { title: "Chat", path: "/chat", icon: MessageCircle },
   { title: "Clientes", path: "/clientes", icon: Users },
   { title: "Configurações", path: "/configuracoes", icon: Settings },
 ];
